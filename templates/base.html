@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load static %}
+<!-- saved from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<html lang="zh-CN">
+<head>
+    <style>
+        body{
+        height:100%;
+        width: 100%;
+        background:url("../static/images/3.jpg");
+        background-size: cover;}
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/books.png">
+    <title>图书推荐系统</title>
+    {% block style %}
+    {% endblock %}
+    <!-- Bootstrap core CSS -->
+    {#图书界面布局#}
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    {#我的信息界面布局#}
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background: saddlebrown">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'all_book' %}">图书推荐系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+                <li><a href="{% url 'week_reco' %}">猜你喜欢</a></li>
+                <li><a href="{% url 'reco_by_mo' %}">为你推荐</a></li>
+                <li><a href="{% url 'hot_book' %}">热销排行</a></li>
+                <li><a href="{% url 'highscore' %}">评分排行</a></li>
+                <li><a href="{% url 'latest_book' %}">新书上榜</a></li>
+                <li><a href="{% url 'personal' %}">我的信息</a></li>
+
+        </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if request.session.login_in == True %}
+
+                    <li><a href="{% url 'personal' %}"><img src="{% static 'images/anyUser.jpg '%}">{{ request.session.name }}</a></li>
+                    <li><a href="{% url 'logout' %}">退出</a></li>
+                {% else %}
+                <div class="col-xs-6"><h4><a href="{% url 'login' %}" style="color:yellowgreen">登录</a></h4></div>
+                <div class="col-xs-6"><h4><a href="{% url 'register' %}" style="color:yellowgreen">注册</a></h4></div>
+                {% endif %}
+            </ul>
+            <form class="navbar-form navbar-right" action="{% url 'search' %}" method='post'>
+                {% csrf_token %}
+                <input type="text" class="form-control" name="search" placeholder="输入关键字">
+                <button class="btn btn-default" type="submit">提交</button>
+            </form>
+        </div>
+    </div>
+</nav>
+            {% block right-panel-content %}
+            {% endblock %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/js/jquery-2.1.1.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+<script src="/static/js/custom.js"></script>
+
+<script src="/static/js/plugins/highstock/js/highstock.js"></script>
+<script src="/static/js/plugins/highstock/js/modules/exporting.js"></script>
+<script type="text/javascript">
+    $(function ($) {
+            {#    导航栏按钮渲染#}
+            $(".navbar").find("li").each(function () {
+                var a = $(this).find("a:first")[0];
+                if ($(a).attr("href") === location.pathname) {
+                    $(this).addClass("active");
+                } else {
+                    $(this).removeClass("active");
+                }
+            });
+        });
+</script>
+{% block bottom-js %}
+    <!--put your own js here in your page -->
+{% endblock %}
+
+</body>
+</html>
